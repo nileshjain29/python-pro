@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Python Pro">
+<title>Python Pro Academy</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--surface:#111118;--card:#16161f;--card2:#1a1a24;
+  --text:#e8e8f0;--text2:#8888a8;--text3:#4a4a6a;
+  --blue:#4f8ef7;--blue-dim:rgba(79,142,247,0.12);
+  --green:#34d399;--green-dim:rgba(52,211,153,0.12);
+  --amber:#fbbf24;--amber-dim:rgba(251,191,36,0.12);
+  --red:#f87171;--red-dim:rgba(248,113,113,0.12);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);
+  --cyan:#22d3ee;--cyan-dim:rgba(34,211,238,0.12);
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --radius:10px;--radius-sm:6px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+#app{max-width:920px;margin:0 auto;padding:1rem;padding-bottom:3rem}
+.screen{display:none}.screen.active{display:block}
+.btn{border:none;border-radius:var(--radius-sm);padding:8px 16px;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;transition:all 0.15s}
+.btn:hover{filter:brightness(1.1)}.btn:active{transform:scale(0.97)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-green{background:var(--green);color:#0a0a0f}
+.btn-amber{background:var(--amber);color:#0a0a0f}
+.btn-red{background:var(--red);color:#0a0a0f}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover{background:rgba(255,255,255,0.05);color:var(--text)}
+.btn-purple{background:var(--purple);color:#0a0a0f}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+
+/* LAYOUT */
+.nav{display:flex;align-items:center;gap:8px;padding:0.75rem 0;margin-bottom:1.25rem;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.nav-brand{font-size:15px;font-weight:600;flex:1;color:var(--text)}
+.nav-brand span{color:var(--blue)}
+.pill{font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.05);color:var(--text2);border:1px solid var(--border)}
+.pill.blue{color:var(--blue);border-color:rgba(79,142,247,0.3);background:var(--blue-dim)}
+.pill.green{color:var(--green);border-color:rgba(52,211,153,0.3);background:var(--green-dim)}
+
+/* XP */
+.xp-track{background:rgba(255,255,255,0.05);border-radius:20px;height:4px;overflow:hidden}
+.xp-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width 0.6s ease}
+
+/* LOGIN */
+.login-wrap{max-width:440px;margin:3rem auto;padding:0 1rem}
+.login-logo{font-size:14px;font-weight:600;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-bottom:2rem}
+.login-logo span{color:var(--blue)}
+.login-wrap h1{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0.5rem}
+.login-wrap h1 span{color:var(--blue)}
+.login-wrap .sub{color:var(--text2);font-size:14px;margin-bottom:2rem;line-height:1.6}
+.input-field{width:100%;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:11px 14px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color 0.15s;margin-bottom:10px}
+.input-field:focus{border-color:var(--blue)}
+.input-field::placeholder{color:var(--text3)}
+.tab-row{display:flex;gap:4px;margin-bottom:1.5rem;background:var(--card);padding:4px;border-radius:var(--radius-sm);border:1px solid var(--border)}
+.tab{flex:1;padding:7px;border-radius:4px;font-size:12px;cursor:pointer;border:none;background:transparent;color:var(--text2);font-family:inherit;font-weight:500;transition:all 0.15s;text-align:center}
+.tab.active{background:var(--blue);color:#fff}
+.divider{display:flex;align-items:center;gap:10px;margin:1.5rem 0;color:var(--text3);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* HOME */
+.home-header{padding:1.5rem 0 1rem}
+.home-header h1{font-size:22px;font-weight:600;margin-bottom:4px}
+.home-header p{color:var(--text2);font-size:13px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin:1rem 0}
+.stat-mini{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:0.75rem;text-align:center}
+.stat-mini-num{font-size:20px;font-weight:600;margin-bottom:2px}
+.stat-mini-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+.quick-row{display:flex;gap:8px;margin:1rem 0;flex-wrap:wrap}
+.quick-card{flex:1;min-width:120px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;cursor:pointer;transition:all 0.2s;text-align:center}
+.quick-card:hover{border-color:var(--border2);transform:translateY(-2px);background:var(--card2)}
+.qc-icon{font-size:22px;margin-bottom:6px}
+.qc-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.qc-sub{font-size:10px;color:var(--text2)}
+
+/* TRACKS */
+.track-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.track-scroll::-webkit-scrollbar{height:3px}.track-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.track-card{min-width:160px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;cursor:pointer;flex-shrink:0;transition:all 0.2s}
+.track-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.track-card.locked{opacity:0.35;cursor:not-allowed;pointer-events:none}
+.track-card.selected{border-color:var(--blue);background:var(--blue-dim)}
+.tc-icon{font-size:26px;margin-bottom:8px}
+.tc-name{font-size:13px;font-weight:600;margin-bottom:3px}
+.tc-sub{font-size:11px;color:var(--text2);margin-bottom:6px}
+.tc-prog{font-size:10px;color:var(--green)}
+.tc-lock{font-size:10px;color:var(--text3)}
+
+/* TOPICS */
+.topic-list{display:flex;flex-direction:column;gap:6px;margin-bottom:1.25rem}
+.topic-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:0.85rem 1rem;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all 0.15s}
+.topic-item:hover{border-color:var(--border2);background:var(--card2)}
+.topic-item.done{border-color:rgba(52,211,153,0.2);background:rgba(52,211,153,0.03)}
+.topic-item.selected{border-color:var(--blue);background:var(--blue-dim)}
+.ti-icon{font-size:18px;width:28px;text-align:center;flex-shrink:0}
+.ti-info{flex:1}
+.ti-name{font-size:13px;font-weight:500;margin-bottom:2px}
+.ti-desc{font-size:11px;color:var(--text2)}
+.ti-badge{font-size:10px;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.ti-badge.done{background:var(--green-dim);color:var(--green)}
+.ti-badge.new{background:var(--blue-dim);color:var(--blue)}
+.difficulty{font-size:10px;padding:2px 8px;border-radius:20px;margin-left:auto;flex-shrink:0}
+.difficulty.beginner{background:var(--green-dim);color:var(--green)}
+.difficulty.intermediate{background:var(--amber-dim);color:var(--amber)}
+.difficulty.advanced{background:var(--red-dim);color:var(--red)}
+
+/* LESSON */
+.lesson-layout{display:grid;grid-template-columns:1fr;gap:12px}
+.chat-wrap{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);min-height:300px;max-height:420px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
+.msg{display:flex;gap:10px;align-items:flex-start}.msg.user{flex-direction:row-reverse}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;letter-spacing:0.5px}
+.av.bot{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff}
+.av.usr{background:linear-gradient(135deg,var(--green),var(--cyan));color:#0a0a0f}
+.bub{max-width:84%;padding:10px 14px;border-radius:var(--radius);font-size:13px;line-height:1.7;background:var(--card);border:1px solid var(--border)}
+.msg.user .bub{background:var(--blue-dim);border-color:rgba(79,142,247,0.2)}
+.bub code{font-family:'Menlo','Monaco','Courier New',monospace;background:rgba(255,255,255,0.07);padding:2px 5px;border-radius:3px;font-size:11px;color:var(--cyan)}
+.bub pre{font-family:'Menlo','Monaco','Courier New',monospace;background:rgba(0,0,0,0.5);padding:12px;border-radius:var(--radius-sm);font-size:12px;margin:8px 0;overflow-x:auto;white-space:pre-wrap;border:1px solid var(--border);color:#7dd3fc;line-height:1.6}
+.bub strong{color:var(--text);font-weight:600}
+.bub ul{padding-left:1.2rem;margin:6px 0}
+.bub li{margin:3px 0;font-size:13px}
+.typing-dots{display:flex;gap:5px;align-items:center;padding:10px 14px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);width:fit-content}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--text3);animation:blink 1.2s infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+.editor-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.editor-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.3);border-bottom:1px solid var(--border)}
+.editor-title{font-size:11px;color:var(--text2);font-family:monospace}
+.editor-dots{display:flex;gap:5px}
+.editor-dots span{width:10px;height:10px;border-radius:50%}
+textarea#codeIn{width:100%;height:140px;font-family:'Menlo','Monaco','Courier New',monospace;font-size:12px;background:rgba(0,0,0,0.4);color:#e2e8f0;border:none;padding:12px;outline:none;resize:vertical;line-height:1.6}
+textarea#codeIn::placeholder{color:var(--text3)}
+.editor-footer{padding:8px 12px;display:flex;gap:8px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border);flex-wrap:wrap}
+
+.chat-input-row{display:flex;gap:8px;margin-top:10px}
+.chat-input-row input{flex:1;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;outline:none}
+.chat-input-row input:focus{border-color:var(--blue)}
+.chat-input-row input::placeholder{color:var(--text3)}
+
+/* QUIZ */
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px}
+.quiz-meta{font-size:12px;color:var(--text2)}
+.q-progress{display:flex;gap:5px;margin-bottom:1rem}
+.q-dot{width:28px;height:4px;border-radius:2px;background:rgba(255,255,255,0.08);transition:background 0.3s}
+.q-dot.done{background:var(--green)}.q-dot.current{background:var(--blue)}
+.quiz-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem}
+.quiz-topic-tag{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px}
+.quiz-q{font-size:15px;font-weight:500;line-height:1.55;margin-bottom:1rem;color:var(--text)}
+.quiz-code{font-family:'Menlo','Monaco','Courier New',monospace;font-size:12px;background:rgba(0,0,0,0.5);padding:12px;border-radius:var(--radius-sm);margin-bottom:14px;color:#7dd3fc;border:1px solid var(--border);overflow-x:auto;white-space:pre-wrap}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:500px){.quiz-opts{grid-template-columns:1fr}}
+.quiz-opt{padding:10px 14px;border:1px solid var(--border2);border-radius:var(--radius-sm);cursor:pointer;font-size:13px;background:var(--card2);text-align:left;font-family:inherit;color:var(--text);transition:all 0.15s;line-height:1.4}
+.quiz-opt:hover{border-color:var(--blue);background:var(--blue-dim)}
+.quiz-opt.correct{background:var(--green-dim);border-color:rgba(52,211,153,0.4);color:var(--green)}
+.quiz-opt.wrong{background:var(--red-dim);border-color:rgba(248,113,113,0.4);color:var(--red)}
+.feedback{margin-top:12px;padding:12px;border-radius:var(--radius-sm);font-size:13px;display:none;line-height:1.6}
+.feedback.ok{background:var(--green-dim);border:1px solid rgba(52,211,153,0.2);color:var(--green)}
+.feedback.bad{background:var(--red-dim);border:1px solid rgba(248,113,113,0.2);color:var(--red)}
+.streak-display{display:inline-flex;align-items:center;gap:5px;background:var(--amber-dim);border:1px solid rgba(251,191,36,0.2);color:var(--amber);font-size:12px;padding:4px 10px;border-radius:20px}
+
+/* CHALLENGES */
+.challenge-list{display:flex;flex-direction:column;gap:8px;margin-bottom:1.25rem}
+.challenge-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;cursor:pointer;transition:all 0.15s}
+.challenge-item:hover{border-color:var(--border2);transform:translateX(3px)}
+.challenge-item.solved{border-color:rgba(52,211,153,0.25)}
+.ci-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.ci-name{font-size:13px;font-weight:500}
+.ci-meta{display:flex;gap:6px;align-items:center}
+.ci-desc{font-size:12px;color:var(--text2);line-height:1.5}
+.diff-badge{font-size:10px;padding:2px 8px;border-radius:20px}
+.diff-badge.easy{background:var(--green-dim);color:var(--green)}
+.diff-badge.medium{background:var(--amber-dim);color:var(--amber)}
+.diff-badge.hard{background:var(--red-dim);color:var(--red)}
+.xp-tag{font-size:10px;color:var(--blue);background:var(--blue-dim);padding:2px 8px;border-radius:20px}
+
+/* ROADMAP */
+.roadmap{display:flex;flex-direction:column;gap:0}
+.rm-step{display:flex;gap:16px;position:relative}
+.rm-step::before{content:'';position:absolute;left:15px;top:36px;width:1px;height:calc(100% - 10px);background:var(--border)}
+.rm-step:last-child::before{display:none}
+.rm-node{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:4px;z-index:1;border:2px solid var(--border)}
+.rm-node.done{background:var(--green);border-color:var(--green);color:#0a0a0f}
+.rm-node.current{background:var(--blue);border-color:var(--blue);color:#fff}
+.rm-node.locked{background:var(--card);color:var(--text3)}
+.rm-content{flex:1;padding-bottom:1.5rem}
+.rm-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.rm-desc{font-size:12px;color:var(--text2);line-height:1.5}
+.rm-topics{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.rm-tag{font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.05);color:var(--text3);border:1px solid var(--border)}
+.rm-tag.done{background:var(--green-dim);color:var(--green);border-color:transparent}
+
+/* BADGES */
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-bottom:1.25rem}
+.badge-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:0.85rem;text-align:center;transition:all 0.15s}
+.badge-item.earned{border-color:rgba(251,191,36,0.25);background:rgba(251,191,36,0.04)}
+.badge-item.locked{opacity:0.25}
+.bi-icon{font-size:26px;margin-bottom:5px}
+.bi-name{font-size:10px;font-weight:600;margin-bottom:2px;color:var(--text)}
+.bi-desc{font-size:9px;color:var(--text2)}
+
+/* PARENT */
+.dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:1.25rem}
+.dash-stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem}
+.ds-num{font-size:22px;font-weight:600;margin-bottom:3px}
+.ds-lbl{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+.activity-feed{display:flex;flex-direction:column;gap:0}
+.af-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.af-icon{width:28px;height:28px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.pw-row{margin-bottom:10px}
+.pw-hdr{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;color:var(--text2)}
+.pw-bar{background:rgba(255,255,255,0.05);border-radius:20px;height:4px;overflow:hidden}
+.pw-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--green),var(--blue))}
+
+/* CELEBRATE */
+.celebrate{text-align:center;padding:2.5rem 1rem;max-width:500px;margin:0 auto}
+.cel-icon{font-size:64px;margin-bottom:1rem;animation:pop 0.5s cubic-bezier(.17,.67,.83,.67)}
+@keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+.xp-earned{display:inline-block;background:linear-gradient(135deg,var(--amber),#f59e0b);color:#0a0a0f;font-size:14px;font-weight:700;padding:6px 20px;border-radius:20px;margin:0.75rem 0}
+.new-badge-reveal{background:var(--card);border:1px solid rgba(251,191,36,0.3);border-radius:var(--radius);padding:1.25rem;margin:1rem auto;max-width:260px;text-align:center;display:none}
+.nbr-icon{font-size:40px;margin-bottom:8px}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .quiz-opts{grid-template-columns:1fr}
+  .dash-grid{grid-template-columns:repeat(2,1fr)}
+  .quick-row{display:grid;grid-template-columns:repeat(2,1fr)}
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- LOGIN -->
+<div id="loginScreen" class="screen active">
+  <div class="login-wrap">
+    <div class="login-logo">Python <span>Pro</span> Academy</div>
+    <h1>Master <span>Python</span> from scratch.</h1>
+    <p class="sub">A structured learning path from beginner to job-ready developer. AI-powered lessons, real coding challenges, and a clear roadmap.</p>
+    <div class="tab-row">
+      <button class="tab active" id="tabMe" onclick="setMode('me')">I'm the learner</button>
+      <button class="tab" id="tabDash" onclick="setMode('dash')">Dashboard</button>
+    </div>
+    <div id="meForm">
+      <input type="text" class="input-field" id="userName" placeholder="Your name" maxlength="30" onkeydown="if(event.key==='Enter')loginUser()">
+      <button class="btn btn-blue" style="width:100%;padding:12px;font-size:14px;font-weight:600" onclick="loginUser()">Start Learning →</button>
+      <div class="divider">Progress is saved automatically</div>
+      <p style="font-size:12px;color:var(--text3);text-align:center">No account needed. Works on any device.</p>
+    </div>
+    <div id="dashForm" style="display:none">
+      <input type="text" class="input-field" id="dashName" placeholder="Your name">
+      <input type="password" class="input-field" id="dashPin" placeholder="Dashboard PIN (default: 0000)" maxlength="6" onkeydown="if(event.key==='Enter')loginDash()">
+      <button class="btn btn-ghost" style="width:100%;padding:12px;font-size:14px" onclick="loginDash()">Open Dashboard →</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="homeScreen" class="screen">
+  <div class="nav">
+    <span class="nav-brand">Python <span>Pro</span></span>
+    <span class="pill" id="navName">User</span>
+    <span class="pill blue" id="navXP">0 XP</span>
+    <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px" onclick="show('loginScreen')">⏏ Exit</button>
+  </div>
+  <div style="margin-bottom:1rem">
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px">
+      <span id="lvlLabel">Level 1 — Beginner</span>
+      <span id="xpNextLabel">100 XP to next level</span>
+    </div>
+    <div class="xp-track"><div class="xp-fill" id="homeBar" style="width:1%"></div></div>
+  </div>
+  <div class="stats-row" id="statsRow"></div>
+  <div class="quick-row">
+    <div class="quick-card" onclick="goTracks()">
+      <div class="qc-icon">🗺️</div>
+      <div class="qc-name">Learning Tracks</div>
+      <div class="qc-sub">Structured curriculum</div>
+    </div>
+    <div class="quick-card" onclick="showChallenges()">
+      <div class="qc-icon">⚔️</div>
+      <div class="qc-name">Challenges</div>
+      <div class="qc-sub">Practice problems</div>
+    </div>
+    <div class="quick-card" onclick="startQuiz()">
+      <div class="qc-icon">🧠</div>
+      <div class="qc-name">Quiz Mode</div>
+      <div class="qc-sub">Test your knowledge</div>
+    </div>
+    <div class="quick-card" onclick="showRoadmap()">
+      <div class="qc-icon">📍</div>
+      <div class="qc-name">Roadmap</div>
+      <div class="qc-sub">Your journey to dev</div>
+    </div>
+    <div class="quick-card" onclick="showBadges()">
+      <div class="qc-icon">🏅</div>
+      <div class="qc-name">Achievements</div>
+      <div class="qc-sub" id="badgeCount">0 earned</div>
+    </div>
+  </div>
+  <div style="margin-top:1.25rem">
+    <div style="font-size:12px;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Learning Tracks</div>
+    <div class="track-scroll" id="trackScroll"></div>
+    <div style="margin-top:1rem;text-align:center">
+      <button class="btn btn-blue" style="padding:10px 28px" onclick="goTracks()">Browse All Topics →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRACKS / TOPICS -->
+<div id="trackScreen" class="screen">
+  <div class="nav">
+    <button class="btn btn-ghost" onclick="show('homeScreen')">← Home</button>
+    <span class="nav-brand" id="trackTitle">Topics</span>
+    <span class="pill blue" id="trackXP">0 XP</span>
+    <button class="btn btn-amber" style="font-size:11px;padding:4px 10px" onclick="startQuiz()">Quiz</button>
+  </div>
+  <div class="topic-list" id="topicList"></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-blue" onclick="startLesson()">Start Lesson →</button>
+    <button class="btn btn-ghost" onclick="showChallenges()">⚔️ Challenges</button>
+  </div>
+</div>
+
+<!-- LESSON -->
+<div id="lessonScreen" class="screen">
+  <div class="nav">
+    <button class="btn btn-ghost" onclick="show('trackScreen')">← Topics</button>
+    <span class="nav-brand" id="lessonTitle">Lesson</span>
+    <span class="pill blue" id="lessonXP">0 XP</span>
+    <button class="btn btn-amber" style="font-size:11px;padding:4px 10px" onclick="startQuiz()">Quiz</button>
+  </div>
+  <div class="lesson-layout">
+    <div class="chat-wrap" id="chatWrap"></div>
+    <div class="editor-wrap" id="editorWrap">
+      <div class="editor-header">
+        <span class="editor-title">python — editor</span>
+        <div class="editor-dots">
+          <span style="background:#ff5f57"></span>
+          <span style="background:#febc2e"></span>
+          <span style="background:#28c840"></span>
+        </div>
+      </div>
+      <textarea id="codeIn" placeholder="# Write Python code here and get feedback from your AI tutor&#10;# Example:&#10;def greet(name):&#10;    return f'Hello, {name}!'&#10;&#10;print(greet('World'))"></textarea>
+      <div class="editor-footer">
+        <button class="btn btn-green" onclick="submitCode()">▶ Run &amp; Review</button>
+        <button class="btn btn-amber" onclick="getHint()">💡 Hint</button>
+        <button class="btn btn-ghost" onclick="explainCode()">🔍 Explain my code</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('codeIn').value=''">Clear</button>
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chatIn" placeholder="Ask your AI tutor anything about this topic..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="btn btn-blue" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHALLENGES -->
+<div id="challengeScreen" class="screen">
+  <div class="nav">
+    <button class="btn btn-ghost" onclick="show('homeScreen')">← Home</button>
+    <span class="nav-brand">⚔️ Coding Challenges</span>
+    <span class="pill blue" id="chalXP">0 XP</span>
+  </div>
+  <div class="tab-row" style="margin-bottom:1rem">
+    <button class="tab active" onclick="setChalDiff('all',this)">All</button>
+    <button class="tab" onclick="setChalDiff('easy',this)">Easy</button>
+    <button class="tab" onclick="setChalDiff('medium',this)">Medium</button>
+    <button class="tab" onclick="setChalDiff('hard',this)">Hard</button>
+  </div>
+  <div class="challenge-list" id="chalList"></div>
+</div>
+
+<!-- CHALLENGE DETAIL -->
+<div id="chalDetailScreen" class="screen">
+  <div class="nav">
+    <button class="btn btn-ghost" onclick="show('challengeScreen')">← Challenges</button>
+    <span class="nav-brand" id="chalTitle">Challenge</span>
+    <span class="pill blue" id="chalDetailXP">0 XP</span>
+  </div>
+  <div class="card" style="margin-bottom:1rem">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <span class="diff-badge" id="chalDiffBadge">easy</span>
+      <span class="xp-tag" id="chalXPtag">+30 XP</span>
+    </div>
+    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:10px" id="chalDesc">Description</p>
+    <div id="chalExampleWrap" style="display:none">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:5px">Example:</div>
+      <pre id="chalExample" style="font-family:Menlo,Monaco,monospace;font-size:12px;background:rgba(0,0,0,0.4);padding:10px;border-radius:6px;color:#7dd3fc;border:1px solid var(--border);overflow-x:auto;white-space:pre-wrap"></pre>
+    </div>
+  </div>
+  <div class="editor-wrap" style="margin-bottom:1rem">
+    <div class="editor-header">
+      <span class="editor-title">solution.py</span>
+      <div class="editor-dots">
+        <span style="background:#ff5f57"></span>
+        <span style="background:#febc2e"></span>
+        <span style="background:#28c840"></span>
+      </div>
+    </div>
+    <textarea id="chalCodeIn" style="width:100%;height:160px;font-family:Menlo,Monaco,monospace;font-size:12px;background:rgba(0,0,0,0.4);color:#e2e8f0;border:none;padding:12px;outline:none;resize:vertical;line-height:1.6" placeholder="# Write your solution here..."></textarea>
+    <div class="editor-footer">
+      <button class="btn btn-green" onclick="submitChallenge()">▶ Submit Solution</button>
+      <button class="btn btn-amber" onclick="getChalHint()">💡 Hint</button>
+      <button class="btn btn-ghost" onclick="getChalSolution()">👁 Show Solution</button>
+    </div>
+  </div>
+  <div class="chat-wrap" id="chalChat" style="min-height:150px;max-height:280px;margin-bottom:10px"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chalChatIn" placeholder="Ask about this challenge..." onkeydown="if(event.key==='Enter')sendChalChat()">
+    <button class="btn btn-blue" onclick="sendChalChat()">Send</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quizScreen" class="screen">
+  <div class="nav">
+    <button class="btn btn-ghost" onclick="show('homeScreen')">← Home</button>
+    <span class="nav-brand">🧠 Quiz Mode</span>
+    <span class="pill blue" id="quizXPpill">0 XP</span>
+    <div class="streak-display" id="streakDisplay"><span>🔥</span><span id="streakNum">0</span></div>
+  </div>
+  <div class="tab-row" style="margin-bottom:1rem" id="quizDiffTabs">
+    <button class="tab active" onclick="setQuizDiff('beginner',this)">Beginner</button>
+    <button class="tab" onclick="setQuizDiff('intermediate',this)">Intermediate</button>
+    <button class="tab" onclick="setQuizDiff('advanced',this)">Advanced</button>
+  </div>
+  <div id="quizLoading" style="text-align:center;padding:3rem;color:var(--text2)">
+    <div style="font-size:36px;margin-bottom:1rem">🤔</div>
+    <div style="font-size:14px">Generating quiz questions...</div>
+  </div>
+  <div id="quizArea" style="display:none">
+    <div class="quiz-header">
+      <div class="quiz-meta" id="quizMeta">Question 1 of 5</div>
+      <div class="streak-display"><span>🔥</span><span id="streakNum2">0</span> streak</div>
+    </div>
+    <div class="q-progress" id="qProg"></div>
+    <div class="quiz-card">
+      <div class="quiz-topic-tag" id="qTopicTag">Topic</div>
+      <div class="quiz-q" id="qText">Question</div>
+      <pre class="quiz-code" id="qCode" style="display:none"></pre>
+      <div class="quiz-opts" id="qOpts"></div>
+      <div class="feedback" id="qFeedback"></div>
+    </div>
+    <div id="qNextWrap" style="display:none;text-align:right">
+      <button class="btn btn-blue" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+  <div id="quizSummary" style="display:none;text-align:center;padding:2rem">
+    <div style="font-size:52px;margin-bottom:0.75rem" id="sumIcon">🎉</div>
+    <h2 id="sumTitle" style="margin-bottom:6px;font-size:20px">Quiz Complete!</h2>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:0.75rem" id="sumScore"></p>
+    <div class="xp-earned" id="sumXP">+XP</div>
+    <div style="margin-top:1.5rem;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-blue" onclick="startQuiz()">Try Again</button>
+      <button class="btn btn-ghost" onclick="show('homeScreen')">Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<div id="roadmapScreen" class="screen">
+  <div class="nav">
+    <button class="btn btn-ghost" onclick="show('homeScreen')">← Home</button>
+    <span class="nav-brand">📍 Dev Roadmap</span>
+    <span class="pill blue" id="rmXP">0 XP</span>
+  </div>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem;line-height:1.6">Your complete path from Python beginner to professional developer. Each milestone unlocks the next.</p>
+  <div class="roadmap" id="roadmapList"></div>
+</div>
+
+<!-- BADGES -->
+<div id="badgeScreen" class="screen">
+  <div class="nav">
+    <button class="btn btn-ghost" onclick="show('homeScreen')">← Home</button>
+    <span class="nav-brand">🏅 Achievements</span>
+    <span class="pill blue" id="badgeXP">0 XP</span>
+  </div>
+  <div class="card" style="margin-bottom:1rem">
+    <div style="font-size:12px;color:var(--text2);margin-bottom:6px" id="badgeSummaryText">0 / 20 achievements earned</div>
+    <div class="xp-track"><div class="xp-fill" id="badgeBar" style="width:1%"></div></div>
+  </div>
+  <div class="badge-grid" id="badgeGrid"></div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashScreen" class="screen">
+  <div class="nav">
+    <button class="btn btn-ghost" onclick="show('loginScreen')">← Exit</button>
+    <span class="nav-brand">📊 Dashboard</span>
+    <span class="pill" id="dashNamePill">User</span>
+  </div>
+  <div class="tab-row" id="dashTabs">
+    <button class="tab active" onclick="dTab('overview',this)">Overview</button>
+    <button class="tab" onclick="dTab('progress',this)">Progress</button>
+    <button class="tab" onclick="dTab('activity',this)">Activity</button>
+    <button class="tab" onclick="dTab('settings',this)">Settings</button>
+  </div>
+  <div id="dOverview">
+    <div class="dash-grid" id="dStatsGrid"></div>
+    <div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Recent Activity</div>
+    <div class="activity-feed" id="dActFeed"></div>
+  </div>
+  <div id="dProgress" style="display:none">
+    <div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Track Progress</div>
+    <div id="dTrackProg"></div>
+    <div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin:1rem 0 10px">Quiz Performance</div>
+    <div class="dash-grid">
+      <div class="dash-stat"><div class="ds-num" id="dqTotal">0</div><div class="ds-lbl">Quizzes</div></div>
+      <div class="dash-stat"><div class="ds-num" id="dqCorrect">0</div><div class="ds-lbl">Correct</div></div>
+      <div class="dash-stat"><div class="ds-num" id="dqStreak">0</div><div class="ds-lbl">Best Streak</div></div>
+      <div class="dash-stat"><div class="ds-num" id="dqAcc">0%</div><div class="ds-lbl">Accuracy</div></div>
+    </div>
+  </div>
+  <div id="dActivity" style="display:none">
+    <div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Challenges Solved</div>
+    <div class="dash-grid">
+      <div class="dash-stat"><div class="ds-num" id="dcEasy">0</div><div class="ds-lbl">Easy</div></div>
+      <div class="dash-stat"><div class="ds-num" id="dcMed">0</div><div class="ds-lbl">Medium</div></div>
+      <div class="dash-stat"><div class="ds-num" id="dcHard">0</div><div class="ds-lbl">Hard</div></div>
+    </div>
+    <div style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin:1rem 0 10px">Earned Badges</div>
+    <div class="badge-grid" id="dBadgeGrid"></div>
+  </div>
+  <div id="dSettings" style="display:none">
+    <div class="card" style="margin-bottom:0.8rem">
+      <div style="font-size:14px;font-weight:600;margin-bottom:0.75rem">Change Dashboard PIN</div>
+      <input type="password" class="input-field" id="pin1" placeholder="New PIN (4-6 digits)" maxlength="6">
+      <input type="password" class="input-field" id="pin2" placeholder="Confirm PIN" maxlength="6">
+      <button class="btn btn-blue" onclick="savePin()">Save PIN</button>
+      <p style="font-size:11px;color:var(--text2);margin-top:8px" id="pinMsg"></p>
+    </div>
+    <div class="card">
+      <div style="font-size:14px;font-weight:600;margin-bottom:6px">Reset Progress</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:0.75rem">Permanently erase all XP, lessons, and achievements.</p>
+      <button class="btn btn-red" onclick="doReset()">Reset All Progress</button>
+    </div>
+  </div>
+</div>
+
+<!-- CELEBRATE -->
+<div id="celebScreen" class="screen">
+  <div class="celebrate">
+    <div class="cel-icon" id="celIcon">🎉</div>
+    <h2 id="celTitle" style="font-size:22px;margin-bottom:6px">Excellent work!</h2>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:0.5rem" id="celMsg">Lesson complete!</p>
+    <div class="xp-earned" id="celXP">+30 XP</div>
+    <div class="new-badge-reveal" id="newBadgeBox">
+      <div class="nbr-icon" id="nbIcon">🏅</div>
+      <div style="font-size:14px;font-weight:600;margin-bottom:3px" id="nbName">Achievement unlocked!</div>
+      <div style="font-size:12px;color:var(--text2)" id="nbDesc"></div>
+    </div>
+    <div style="margin-top:1.5rem;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-blue" onclick="show('trackScreen')">Continue Learning</button>
+      <button class="btn btn-amber" onclick="startQuiz()">🧠 Test yourself</button>
+      <button class="btn btn-ghost" onclick="show('homeScreen')">Home</button>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+// DATA
+const TRACKS=[
+  {id:'t1',icon:'🐣',name:'Python Foundations',sub:'Start here',minXP:0,color:'var(--green)',topics:[
+    {id:'setup',icon:'⚙️',name:'Setup & First Program',desc:'Install Python, run your first script',diff:'beginner'},
+    {id:'syntax',icon:'📝',name:'Syntax & Data Types',desc:'int, float, str, bool — the building blocks',diff:'beginner'},
+    {id:'variables',icon:'📦',name:'Variables & Naming',desc:'Best practices for naming and assignment',diff:'beginner'},
+    {id:'operators',icon:'🔢',name:'Operators & Expressions',desc:'Arithmetic, comparison, logical operators',diff:'beginner'},
+    {id:'strings',icon:'🔤',name:'String Mastery',desc:'Methods, formatting, f-strings, slicing',diff:'beginner'},
+    {id:'io',icon:'💬',name:'Input & Output',desc:'print(), input(), formatting output',diff:'beginner'},
+  ]},
+  {id:'t2',icon:'🔀',name:'Control Flow',sub:'Make decisions',minXP:50,color:'var(--blue)',topics:[
+    {id:'if_else',icon:'❓',name:'if / elif / else',desc:'Conditional logic and decision making',diff:'beginner'},
+    {id:'for_loops',icon:'🔄',name:'for Loops',desc:'Iterate over sequences and ranges',diff:'beginner'},
+    {id:'while_loops',icon:'⏳',name:'while Loops',desc:'Loop with conditions, avoid infinite loops',diff:'beginner'},
+    {id:'comprehensions',icon:'⚡',name:'List Comprehensions',desc:'Pythonic one-liner loops',diff:'intermediate'},
+    {id:'exceptions',icon:'🛡️',name:'Exception Handling',desc:'try/except/finally — robust error handling',diff:'intermediate'},
+  ]},
+  {id:'t3',icon:'🗂️',name:'Data Structures',sub:'Organize data',minXP:150,color:'var(--amber)',topics:[
+    {id:'lists',icon:'📋',name:'Lists & Tuples',desc:'Ordered sequences, indexing, slicing',diff:'beginner'},
+    {id:'dicts',icon:'📖',name:'Dictionaries',desc:'Key-value storage, methods, iteration',diff:'intermediate'},
+    {id:'sets',icon:'🫧',name:'Sets',desc:'Unique collections, set operations',diff:'intermediate'},
+    {id:'advanced_ds',icon:'🏗️',name:'Advanced Structures',desc:'deque, defaultdict, Counter, namedtuple',diff:'advanced'},
+    {id:'algorithms',icon:'🔍',name:'Sorting & Searching',desc:'Built-in sort, custom key functions, binary search',diff:'advanced'},
+  ]},
+  {id:'t4',icon:'🧩',name:'Functions & Modules',sub:'Reusable code',minXP:280,color:'var(--purple)',topics:[
+    {id:'functions',icon:'🏭',name:'Functions Deep Dive',desc:'Args, kwargs, *args, **kwargs, defaults',diff:'intermediate'},
+    {id:'scope',icon:'🔭',name:'Scope & Closures',desc:'LEGB rule, closures, nonlocal',diff:'intermediate'},
+    {id:'decorators',icon:'🎁',name:'Decorators',desc:'Function wrappers, @property, @staticmethod',diff:'advanced'},
+    {id:'generators',icon:'🌊',name:'Generators & Iterators',desc:'yield, lazy evaluation, memory efficiency',diff:'advanced'},
+    {id:'modules',icon:'📦',name:'Modules & Packages',desc:'import, __init__.py, standard library',diff:'intermediate'},
+  ]},
+  {id:'t5',icon:'🏛️',name:'Object-Oriented Python',sub:'Classes & objects',minXP:450,color:'var(--cyan)',topics:[
+    {id:'classes',icon:'🏗️',name:'Classes & Objects',desc:'Class definition, instantiation, attributes',diff:'intermediate'},
+    {id:'methods',icon:'⚙️',name:'Methods & Properties',desc:'instance, class, static methods, @property',diff:'intermediate'},
+    {id:'inheritance',icon:'👪',name:'Inheritance & Polymorphism',desc:'super(), method overriding, MRO',diff:'advanced'},
+    {id:'dunder',icon:'✨',name:'Dunder Methods',desc:'__repr__, __str__, __len__, operator overloading',diff:'advanced'},
+    {id:'design_patterns',icon:'🎨',name:'Design Patterns',desc:'Singleton, Factory, Observer in Python',diff:'advanced'},
+  ]},
+  {id:'t6',icon:'📁',name:'Files & Data',sub:'Real-world data',minXP:650,color:'var(--amber)',topics:[
+    {id:'file_io',icon:'📂',name:'File I/O',desc:'open(), read, write, context managers',diff:'intermediate'},
+    {id:'json',icon:'🗂️',name:'JSON & CSV',desc:'Parse, read, write structured data',diff:'intermediate'},
+    {id:'regex',icon:'🔍',name:'Regular Expressions',desc:'Pattern matching with the re module',diff:'advanced'},
+    {id:'pathlib',icon:'📁',name:'pathlib & os',desc:'File system operations the modern way',diff:'intermediate'},
+  ]},
+  {id:'t7',icon:'🌐',name:'Web & APIs',sub:'Connect to the world',minXP:900,color:'var(--blue)',topics:[
+    {id:'requests',icon:'🌐',name:'HTTP Requests',desc:'requests library, GET/POST, headers',diff:'intermediate'},
+    {id:'apis',icon:'🔌',name:'Working with APIs',desc:'REST APIs, JSON responses, authentication',diff:'intermediate'},
+    {id:'flask',icon:'🧪',name:'Flask Basics',desc:'Build a simple web app with Flask',diff:'advanced'},
+    {id:'scraping',icon:'🕷️',name:'Web Scraping',desc:'BeautifulSoup, parsing HTML, ethics',diff:'advanced'},
+  ]},
+  {id:'t8',icon:'📊',name:'Data Science',sub:'Analyze & visualize',minXP:1200,color:'var(--green)',topics:[
+    {id:'numpy',icon:'🔢',name:'NumPy',desc:'Arrays, vectorized operations, linear algebra',diff:'intermediate'},
+    {id:'pandas',icon:'🐼',name:'Pandas',desc:'DataFrames, data cleaning, analysis',diff:'intermediate'},
+    {id:'matplotlib',icon:'📊',name:'Matplotlib & Seaborn',desc:'Data visualization, plots, charts',diff:'intermediate'},
+    {id:'ml_intro',icon:'🤖',name:'ML with scikit-learn',desc:'Train models, evaluation, pipelines',diff:'advanced'},
+  ]},
+  {id:'t9',icon:'⚡',name:'Advanced Python',sub:'Pro techniques',minXP:1600,color:'var(--red)',topics:[
+    {id:'async',icon:'⚡',name:'Async & Await',desc:'asyncio, coroutines, concurrency',diff:'advanced'},
+    {id:'testing',icon:'🧪',name:'Testing with pytest',desc:'Unit tests, fixtures, mocking, TDD',diff:'advanced'},
+    {id:'performance',icon:'🚀',name:'Performance Optimization',desc:'Profiling, caching, multiprocessing',diff:'advanced'},
+    {id:'packaging',icon:'📦',name:'Packaging & Deployment',desc:'pip, pyproject.toml, Docker basics',diff:'advanced'},
+    {id:'interview',icon:'🎯',name:'Interview Prep',desc:'Common Python interview questions & patterns',diff:'advanced'},
+  ]},
+];
+
+const CHALLENGES=[
+  {id:'c1',name:'FizzBuzz',diff:'easy',xp:20,desc:'Print numbers 1-100. For multiples of 3 print "Fizz", multiples of 5 print "Buzz", multiples of both print "FizzBuzz".',example:'Input: 1-15\nOutput: 1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, FizzBuzz'},
+  {id:'c2',name:'Palindrome Check',diff:'easy',xp:20,desc:'Write a function that checks if a string is a palindrome (reads the same forwards and backwards). Ignore spaces and case.',example:'is_palindrome("racecar") → True\nis_palindrome("A man a plan a canal Panama") → True\nis_palindrome("hello") → False'},
+  {id:'c3',name:'Count Vowels',diff:'easy',xp:20,desc:'Write a function that counts the number of vowels (a,e,i,o,u) in a given string.',example:'count_vowels("Hello World") → 3\ncount_vowels("Python") → 1'},
+  {id:'c4',name:'Fibonacci Sequence',diff:'easy',xp:25,desc:'Write a function that returns the first n numbers of the Fibonacci sequence.',example:'fibonacci(7) → [0, 1, 1, 2, 3, 5, 8]'},
+  {id:'c5',name:'Two Sum',diff:'medium',xp:40,desc:'Given a list of integers and a target sum, return the indices of the two numbers that add up to the target.',example:'two_sum([2, 7, 11, 15], 9) → [0, 1]\ntwo_sum([3, 2, 4], 6) → [1, 2]'},
+  {id:'c6',name:'Valid Parentheses',diff:'medium',xp:40,desc:'Write a function to determine if a string of brackets is valid. Each opening bracket must be closed in the correct order.',example:'is_valid("()[]{}") → True\nis_valid("([)]") → False\nis_valid("{[]}") → True'},
+  {id:'c7',name:'Flatten Nested List',diff:'medium',xp:45,desc:'Write a function that flattens a nested list of any depth into a single flat list.',example:'flatten([1, [2, [3, [4]], 5]]) → [1, 2, 3, 4, 5]'},
+  {id:'c8',name:'Word Frequency',diff:'medium',xp:40,desc:'Write a function that takes a string and returns a dictionary with each word as a key and its frequency as the value.',example:'word_freq("the cat sat on the mat") → {"the":2,"cat":1,"sat":1,"on":1,"mat":1}'},
+  {id:'c9',name:'Binary Search',diff:'medium',xp:45,desc:'Implement binary search. Return the index of the target in a sorted list, or -1 if not found.',example:'binary_search([1,3,5,7,9,11], 7) → 3\nbinary_search([1,3,5,7,9,11], 4) → -1'},
+  {id:'c10',name:'LRU Cache',diff:'hard',xp:80,desc:'Implement an LRU (Least Recently Used) Cache class with get() and put() methods. The cache has a fixed capacity.',example:'cache = LRUCache(2)\ncache.put(1, 1)\ncache.put(2, 2)\ncache.get(1) → 1\ncache.put(3, 3)  # evicts key 2'},
+  {id:'c11',name:'Merge Intervals',diff:'hard',xp:70,desc:'Given a list of intervals, merge all overlapping intervals and return the result.',example:'merge([[1,3],[2,6],[8,10],[15,18]]) → [[1,6],[8,10],[15,18]]'},
+  {id:'c12',name:'Decorator Timer',diff:'hard',xp:75,desc:'Write a decorator @timer that measures and prints the execution time of any function it wraps.',example:'@timer\ndef slow_func():\n    time.sleep(1)\n\nslow_func()  # prints: "slow_func took 1.001s"'},
+];
+
+const BADGES=[
+  {id:'b_first',icon:'🌱',name:'First Lesson',desc:'Complete your first lesson',check:g=>g.lessons.length>=1},
+  {id:'b_5lessons',icon:'📚',name:'Dedicated',desc:'Complete 5 lessons',check:g=>g.lessons.length>=5},
+  {id:'b_15lessons',icon:'🎓',name:'Scholar',desc:'Complete 15 lessons',check:g=>g.lessons.length>=15},
+  {id:'b_30lessons',icon:'🏛️',name:'Academic',desc:'Complete 30 lessons',check:g=>g.lessons.length>=30},
+  {id:'b_xp100',icon:'⭐',name:'Century',desc:'Earn 100 XP',check:g=>g.xp>=100},
+  {id:'b_xp500',icon:'🌟',name:'500 Club',desc:'Earn 500 XP',check:g=>g.xp>=500},
+  {id:'b_xp1000',icon:'💫',name:'1K XP',desc:'Earn 1,000 XP',check:g=>g.xp>=1000},
+  {id:'b_xp5000',icon:'🏆',name:'Elite',desc:'Earn 5,000 XP',check:g=>g.xp>=5000},
+  {id:'b_challenge1',icon:'⚔️',name:'Challenger',desc:'Solve first challenge',check:g=>g.solved.length>=1},
+  {id:'b_challenge5',icon:'🗡️',name:'Warrior',desc:'Solve 5 challenges',check:g=>g.solved.length>=5},
+  {id:'b_challenge10',icon:'🛡️',name:'Champion',desc:'Solve 10 challenges',check:g=>g.solved.length>=10},
+  {id:'b_hard',icon:'💀',name:'Hardcore',desc:'Solve a hard challenge',check:g=>CHALLENGES.filter(c=>c.diff==='hard'&&g.solved.includes(c.id)).length>0},
+  {id:'b_quiz10',icon:'🧠',name:'Quiz Ace',desc:'Answer 10 correctly',check:g=>g.quizCorrect>=10},
+  {id:'b_quiz50',icon:'🎯',name:'Sharp Mind',desc:'Answer 50 correctly',check:g=>g.quizCorrect>=50},
+  {id:'b_streak10',icon:'🔥',name:'On Fire',desc:'10 quiz streak',check:g=>g.bestStreak>=10},
+  {id:'b_t1done',icon:'🐣',name:'Foundations',desc:'Complete Python Foundations',check:g=>TRACKS[0].topics.every(t=>g.lessons.includes(t.id))},
+  {id:'b_t4done',icon:'🧩',name:'Functional',desc:'Complete Functions & Modules',check:g=>TRACKS[3].topics.every(t=>g.lessons.includes(t.id))},
+  {id:'b_t5done',icon:'🏛️',name:'OOP Master',desc:'Complete OOP track',check:g=>TRACKS[4].topics.every(t=>g.lessons.includes(t.id))},
+  {id:'b_t7done',icon:'🌐',name:'Web Dev',desc:'Complete Web & APIs',check:g=>TRACKS[6].topics.every(t=>g.lessons.includes(t.id))},
+  {id:'b_all',icon:'👑',name:'Python Master',desc:'Complete all tracks',check:g=>TRACKS.every(tr=>tr.topics.every(t=>g.lessons.includes(t.id)))},
+];
+
+const ROADMAP_STEPS=[
+  {title:'Python Fundamentals',desc:'Variables, data types, control flow, functions. The non-negotiables.',topics:['syntax','variables','operators','strings','if_else','for_loops','functions'],time:'2-4 weeks'},
+  {title:'Data Structures & OOP',desc:'Lists, dicts, sets, classes. How Python organizes information.',topics:['lists','dicts','sets','classes','methods','inheritance'],time:'3-5 weeks'},
+  {title:'Practical Python',desc:'File I/O, JSON, error handling, modules. Build things that work.',topics:['file_io','json','exceptions','modules','regex'],time:'2-3 weeks'},
+  {title:'First Projects',desc:'Build a CLI tool, a data parser, or a simple web scraper.',topics:['requests','scraping','pathlib'],time:'2-4 weeks'},
+  {title:'Web Development or Data Science',desc:'Choose your specialization. Flask/Django for web, Pandas/NumPy for data.',topics:['flask','pandas','numpy','matplotlib'],time:'4-8 weeks'},
+  {title:'Advanced Topics',desc:'Async, testing, performance, decorators, generators.',topics:['async','testing','performance','decorators','generators'],time:'3-5 weeks'},
+  {title:'Job Ready',desc:'Algorithms, interview prep, packaging, open-source contributions.',topics:['algorithms','interview','packaging'],time:'Ongoing'},
+];
+
+let G={name:'',pin:'0000',xp:0,lessons:[],earned:[],solved:[],codeSubmits:0,quizCorrect:0,quizTotal:0,bestStreak:0,curStreak:0,activity:[],selTrack:'t1',selTopic:null,history:[],chalHistory:[],chalDiff:'all'};
+let QS={qs:[],idx:0,correct:0,diff:'beginner',streak:0};
+let curChal=null;
+let loginMode='me';
+
+function save(){try{localStorage.setItem('pyPro_'+G.name,JSON.stringify({...G,history:[],chalHistory:[]}))}catch(e){}}
+function load(n){
+  try{
+    const d=localStorage.getItem('pyPro_'+n);
+    if(d){G={...JSON.parse(d),history:[],chalHistory:[],name:n};}
+    else G={name:n,pin:'0000',xp:0,lessons:[],earned:[],solved:[],codeSubmits:0,quizCorrect:0,quizTotal:0,bestStreak:0,curStreak:0,activity:[],selTrack:'t1',selTopic:null,history:[],chalHistory:[],chalDiff:'all'};
+  }catch(e){}
+}
+
+function setMode(m){
+  loginMode=m;
+  document.getElementById('tabMe').className='tab'+(m==='me'?' active':'');
+  document.getElementById('tabDash').className='tab'+(m==='dash'?' active':'');
+  document.getElementById('meForm').style.display=m==='me'?'block':'none';
+  document.getElementById('dashForm').style.display=m==='dash'?'block':'none';
+}
+function loginUser(){
+  const n=document.getElementById('userName').value.trim();
+  if(!n){alert('Please enter your name');return;}
+  load(n);G.name=n;ui();renderTracks();show('homeScreen');
+}
+function loginDash(){
+  const n=document.getElementById('dashName').value.trim();
+  const p=document.getElementById('dashPin').value.trim();
+  if(!n){alert('Enter your name');return;}
+  load(n);G.name=n;
+  if(p!==(G.pin||'0000')){alert('Wrong PIN. Default is 0000');return;}
+  showDash();
+}
+
+function ui(){
+  const lv=Math.floor(G.xp/100)+1,pct=((G.xp%100)/100)*100;
+  const lvNames={1:'Beginner',2:'Apprentice',3:'Developer',4:'Coder',5:'Engineer',6:'Expert',7:'Senior Dev',8:'Architect',9:'Lead',10:'Principal'};
+  const lvName=lvNames[Math.min(lv,10)]||'Master';
+  ['navXP','trackXP','lessonXP','chalXP','chalDetailXP','quizXPpill','rmXP','badgeXP'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=G.xp+' XP';});
+  const nn=document.getElementById('navName');if(nn)nn.textContent=G.name;
+  const hb=document.getElementById('homeBar');if(hb)hb.style.width=pct+'%';
+  const ll=document.getElementById('lvlLabel');if(ll)ll.textContent='Level '+lv+' — '+lvName;
+  const xn=document.getElementById('xpNextLabel');if(xn)xn.textContent=(100-G.xp%100)+' XP to Level '+(lv+1);
+  const bb=document.getElementById('badgeBar');if(bb)bb.style.width=pct+'%';
+  const bsum=document.getElementById('badgeSummaryText');if(bsum)bsum.textContent=G.earned.length+' / '+BADGES.length+' achievements earned';
+  const bc=document.getElementById('badgeCount');if(bc)bc.textContent=G.earned.length+' earned';
+  const sr=document.getElementById('statsRow');
+  if(sr){
+    const stats=[['⭐',G.xp+' XP','Total XP'],['📚',G.lessons.length,'Lessons'],['⚔️',G.solved.length,'Solved'],['🏅',G.earned.length,'Badges']];
+    sr.innerHTML='';stats.forEach(([ic,n,l])=>{const d=document.createElement('div');d.className='stat-mini';d.innerHTML=`<div class="stat-mini-num">${ic} ${n}</div><div class="stat-mini-lbl">${l}</div>`;sr.appendChild(d);});
+  }
+}
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');ui();}
+
+function renderTracks(){
+  const c=document.getElementById('trackScroll');if(!c)return;c.innerHTML='';
+  TRACKS.forEach(tr=>{
+    const locked=G.xp<tr.minXP;
+    const done=tr.topics.filter(t=>G.lessons.includes(t.id)).length;
+    const d=document.createElement('div');
+    d.className='track-card'+(locked?' locked':'')+(G.selTrack===tr.id?' selected':'');
+    d.innerHTML=`<div class="tc-icon">${tr.icon}</div><div class="tc-name">${tr.name}</div><div class="tc-sub">${tr.sub}</div><div class="${locked?'tc-lock':'tc-prog'}">${locked?'🔒 Requires '+tr.minXP+' XP':done+'/'+tr.topics.length+' complete'}</div>`;
+    if(!locked)d.onclick=()=>{G.selTrack=tr.id;renderTracks();};
+    c.appendChild(d);
+  });
+}
+
+function goTracks(){
+  renderTopics();
+  const tr=TRACKS.find(x=>x.id===G.selTrack);
+  document.getElementById('trackTitle').textContent=tr?tr.icon+' '+tr.name:'Topics';
+  show('trackScreen');
+}
+function renderTopics(){
+  const l=document.getElementById('topicList');if(!l)return;l.innerHTML='';
+  const tr=TRACKS.find(x=>x.id===G.selTrack);if(!tr)return;
+  tr.topics.forEach(t=>{
+    const done=G.lessons.includes(t.id);
+    const d=document.createElement('div');
+    d.className='topic-item'+(done?' done':'')+(G.selTopic===t.id?' selected':'');
+    d.innerHTML=`<div class="ti-icon">${t.icon}</div><div class="ti-info"><div class="ti-name">${t.name}</div><div class="ti-desc">${t.desc}</div></div><span class="difficulty ${t.diff}">${t.diff}</span>${done?'<span class="ti-badge done">✓ Done</span>':'<span class="ti-badge new">New</span>'}`;
+    d.onclick=()=>{G.selTopic=t.id;renderTopics();};
+    l.appendChild(d);
+  });
+}
+
+function startLesson(){
+  const tr=TRACKS.find(x=>x.id===G.selTrack);if(!tr)return;
+  if(!G.selTopic)G.selTopic=tr.topics[0].id;
+  const t=tr.topics.find(x=>x.id===G.selTopic);if(!t)return;
+  document.getElementById('lessonTitle').textContent=t.icon+' '+t.name;
+  G.history=[];document.getElementById('chatWrap').innerHTML='';
+  show('lessonScreen');beginLesson(t,tr);
+}
+
+const SYS_LESSON=`You are an expert Python tutor for adult learners who want to become professional developers. Your teaching style is:
+- Clear and technical but not condescending
+- Use real-world, practical examples (web apps, data analysis, automation, APIs)
+- Show production-quality code with best practices (type hints, docstrings when appropriate)
+- Explain the WHY behind concepts, not just the HOW
+- Reference official documentation and industry standards
+- Cover common pitfalls and gotchas professionals face
+- Keep responses focused — 3-6 sentences for explanations, longer for code
+- After teaching a concept, give a practical exercise or ask a thought-provoking question
+- When the student shows strong understanding, include "lesson complete" in your response`;
+
+async function beginLesson(t,tr){
+  G.history=[{role:'user',content:`Teach me: ${t.name} (${t.desc}). I'm an adult learning Python to become a professional developer. Track: ${tr.name}.`}];
+  await callAI(SYS_LESSON,'chatWrap',G.history);
+}
+async function sendChat(){
+  const el=document.getElementById('chatIn');const txt=el.value.trim();if(!txt)return;el.value='';
+  addMsg(txt,'user','chatWrap');G.history.push({role:'user',content:txt});
+  await callAI(SYS_LESSON,'chatWrap',G.history);
+}
+async function submitCode(){
+  const code=document.getElementById('codeIn').value.trim();if(!code)return;
+  G.codeSubmits++;save();
+  addMsg('```python\n'+code+'\n```','user','chatWrap');
+  G.history.push({role:'user',content:`Review my code:\n\`\`\`python\n${code}\n\`\`\`\nGive me: 1) Does it work? 2) Code quality feedback 3) How a senior dev would improve it`});
+  await callAI(SYS_LESSON,'chatWrap',G.history);checkBadges();
+}
+async function getHint(){
+  G.history.push({role:'user',content:'Give me a targeted hint without giving away the full solution.'});
+  await callAI(SYS_LESSON,'chatWrap',G.history);
+}
+async function explainCode(){
+  const code=document.getElementById('codeIn').value.trim();
+  if(!code){addMsg('Write some code first and I\'ll explain it!','bot','chatWrap');return;}
+  G.history.push({role:'user',content:`Explain this code line by line:\n\`\`\`python\n${code}\n\`\`\``});
+  await callAI(SYS_LESSON,'chatWrap',G.history);
+}
+
+// CHALLENGES
+let chalFilter='all';
+function setChalDiff(d,btn){chalFilter=d;document.querySelectorAll('#challengeScreen .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');renderChallenges();}
+function showChallenges(){renderChallenges();show('challengeScreen');}
+function renderChallenges(){
+  const l=document.getElementById('chalList');if(!l)return;l.innerHTML='';
+  const filtered=chalFilter==='all'?CHALLENGES:CHALLENGES.filter(c=>c.diff===chalFilter);
+  filtered.forEach(c=>{
+    const solved=G.solved.includes(c.id);
+    const d=document.createElement('div');d.className='challenge-item'+(solved?' solved':'');
+    d.innerHTML=`<div class="ci-header"><span class="ci-name">${solved?'✓ ':''} ${c.name}</span><div class="ci-meta"><span class="diff-badge ${c.diff}">${c.diff}</span><span class="xp-tag">+${c.xp} XP</span></div></div><div class="ci-desc">${c.desc.slice(0,100)}...</div>`;
+    d.onclick=()=>openChallenge(c);l.appendChild(d);
+  });
+}
+function openChallenge(c){
+  curChal=c;
+  document.getElementById('chalTitle').textContent=c.name;
+  document.getElementById('chalDiffBadge').textContent=c.diff;document.getElementById('chalDiffBadge').className='diff-badge '+c.diff;
+  document.getElementById('chalXPtag').textContent='+'+c.xp+' XP';
+  document.getElementById('chalDesc').textContent=c.desc;
+  const ex=document.getElementById('chalExampleWrap');
+  if(c.example){ex.style.display='block';document.getElementById('chalExample').textContent=c.example;}else ex.style.display='none';
+  document.getElementById('chalCodeIn').value='';
+  document.getElementById('chalChat').innerHTML='';
+  G.chalHistory=[];
+  show('chalDetailScreen');
+}
+const SYS_CHAL=`You are a coding challenge tutor. Review Python solutions professionally: check correctness, time/space complexity, edge cases, and Pythonic style. Give specific actionable feedback. When solution is correct and good quality, say "challenge solved" in your response.`;
+async function submitChallenge(){
+  const code=document.getElementById('chalCodeIn').value.trim();if(!code||!curChal)return;
+  addMsg('```python\n'+code+'\n```','user','chalChat');
+  G.chalHistory.push({role:'user',content:`Challenge: ${curChal.name}\nDescription: ${curChal.desc}\nMy solution:\n\`\`\`python\n${code}\n\`\`\`\nReview it for correctness, complexity, and style.`});
+  await callAI(SYS_CHAL,'chalChat',G.chalHistory);
+  const lastMsg=G.chalHistory[G.chalHistory.length-1];
+  if(lastMsg&&lastMsg.role==='assistant'&&lastMsg.content.toLowerCase().includes('challenge solved')){
+    if(!G.solved.includes(curChal.id)){
+      G.solved.push(curChal.id);G.xp+=curChal.xp;
+      G.activity.unshift({type:'challenge',name:curChal.name,xp:curChal.xp,diff:curChal.diff,time:Date.now()});
+      if(G.activity.length>30)G.activity.pop();
+      const nb=checkBadges();save();
+      setTimeout(()=>{
+        document.getElementById('celIcon').textContent='⚔️';
+        document.getElementById('celTitle').textContent='Challenge Solved!';
+        document.getElementById('celMsg').textContent=curChal.name+' — '+curChal.diff;
+        document.getElementById('celXP').textContent='+'+curChal.xp+' XP';
+        showNB(nb);show('celebScreen');
+      },1000);
+    }
+  }
+}
+async function getChalHint(){
+  if(!curChal)return;
+  G.chalHistory.push({role:'user',content:`Give me a hint for: ${curChal.name}. Point me in the right direction without giving the solution.`});
+  await callAI(SYS_CHAL,'chalChat',G.chalHistory);
+}
+async function getChalSolution(){
+  if(!curChal)return;
+  G.chalHistory.push({role:'user',content:`Show me a clean, well-commented Python solution for: ${curChal.name}. Explain the approach and complexity.`});
+  await callAI(SYS_CHAL,'chalChat',G.chalHistory);
+}
+async function sendChalChat(){
+  const el=document.getElementById('chalChatIn');const txt=el.value.trim();if(!txt)return;el.value='';
+  addMsg(txt,'user','chalChat');G.chalHistory.push({role:'user',content:txt});
+  await callAI(SYS_CHAL,'chalChat',G.chalHistory);
+}
+
+// QUIZ
+let quizDiff='beginner';
+function setQuizDiff(d,btn){quizDiff=d;document.querySelectorAll('#quizDiffTabs .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
+async function startQuiz(){
+  show('quizScreen');
+  document.getElementById('quizLoading').style.display='block';
+  document.getElementById('quizArea').style.display='none';
+  document.getElementById('quizSummary').style.display='none';
+  QS={qs:[],idx:0,correct:0,diff:quizDiff,streak:0};
+  const recentTopics=G.lessons.slice(-8).join(', ')||'Python basics, variables, functions';
+  const sys=`Generate 5 Python quiz questions for a ${quizDiff} developer. Topics from: ${recentTopics}. Include code output prediction, syntax questions, and concept understanding. Return ONLY valid JSON, no extra text:
+[{"q":"question","code":"optional code snippet or empty string","options":["A","B","C","D"],"answer":0,"explain":"concise technical explanation","topic":"topic name"}]
+answer is 0-3 index. For intermediate/advanced include real-world scenarios and tricky edge cases.`;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,system:sys,messages:[{role:'user',content:'Generate quiz.'}]})});
+    const d=await r.json();
+    let txt=d.content?.[0]?.text||'[]';txt=txt.replace(/```json|```/g,'').trim();
+    QS.qs=JSON.parse(txt);
+  }catch(e){
+    QS.qs=[
+      {q:'What is the output of: print(type([]))',code:'print(type([]))',options:["<class 'list'>",'[]','list','None'],answer:0,explain:'type() returns the type object. Lists are <class list>.',topic:'Built-in Functions'},
+      {q:'Which is the correct way to define a default parameter?',code:'',options:['def f(x=0):','def f(x:0):','def f(x=>0):','def f(x==0):'],answer:0,explain:'Default parameters use = in function signatures.',topic:'Functions'},
+      {q:'What does list comprehension [x**2 for x in range(4)] produce?',code:'',options:['[0,1,4,9]','[1,4,9,16]','[0,2,4,6]','[1,2,3,4]'],answer:0,explain:'range(4) is 0,1,2,3. Each squared: 0,1,4,9.',topic:'Comprehensions'},
+      {q:'What is the output?',code:'d = {"a":1}\nprint(d.get("b", 42))',options:['42','None','KeyError','0'],answer:0,explain:'dict.get(key, default) returns default if key not found.',topic:'Dictionaries'},
+      {q:'Which statement about Python decorators is correct?',code:'',options:['They wrap functions to modify behavior','They define class attributes','They create new data types','They handle exceptions'],answer:0,explain:'Decorators use @syntax to wrap/modify functions.',topic:'Decorators'},
+    ];
+  }
+  document.getElementById('quizLoading').style.display='none';
+  document.getElementById('quizArea').style.display='block';
+  renderQDots();showQuestion();
+}
+function renderQDots(){
+  const d=document.getElementById('qProg');d.innerHTML='';
+  QS.qs.forEach((_,i)=>{const dot=document.createElement('div');dot.className='q-dot'+(i<QS.idx?' done':i===QS.idx?' current':'');d.appendChild(dot);});
+}
+function showQuestion(){
+  const q=QS.qs[QS.idx];if(!q)return;
+  document.getElementById('quizMeta').textContent='Question '+(QS.idx+1)+' of '+QS.qs.length+' · '+QS.diff;
+  document.getElementById('qTopicTag').textContent=q.topic||'Python';
+  document.getElementById('qText').textContent=q.q;
+  const qc=document.getElementById('qCode');
+  if(q.code){qc.style.display='block';qc.textContent=q.code;}else qc.style.display='none';
+  const fb=document.getElementById('qFeedback');fb.style.display='none';fb.className='feedback';
+  document.getElementById('qNextWrap').style.display='none';
+  const opts=document.getElementById('qOpts');opts.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const b=document.createElement('button');b.className='quiz-opt';b.textContent=opt;
+    b.onclick=()=>answerQ(i,b,q);opts.appendChild(b);
+  });
+  renderQDots();
+}
+function answerQ(i,btn,q){
+  document.querySelectorAll('.quiz-opt').forEach(b=>b.onclick=null);
+  const ok=i===q.answer;
+  btn.className='quiz-opt '+(ok?'correct':'wrong');
+  if(!ok)document.querySelectorAll('.quiz-opt')[q.answer].className='quiz-opt correct';
+  const fb=document.getElementById('qFeedback');
+  fb.style.display='block';fb.className='feedback '+(ok?'ok':'bad');
+  fb.textContent=(ok?'✓ Correct! ':'✗ Incorrect. ')+q.explain;
+  if(ok){QS.correct++;QS.streak++;G.quizCorrect++;G.curStreak++;if(G.curStreak>G.bestStreak)G.bestStreak=G.curStreak;}
+  else{QS.streak=0;G.curStreak=0;}
+  G.quizTotal++;QS.idx++;
+  ['streakNum','streakNum2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=QS.streak;});
+  document.getElementById('qNextWrap').style.display='block';
+  checkBadges();save();
+}
+function nextQ(){if(QS.idx>=QS.qs.length)finishQuiz();else showQuestion();}
+function finishQuiz(){
+  const xp=QS.correct*15+(QS.streak>=3?25:0)+(QS.diff==='intermediate'?10:QS.diff==='advanced'?20:0);
+  G.xp+=xp;
+  G.activity.unshift({type:'quiz',name:'Quiz ('+QS.diff+')',xp,score:QS.correct+'/'+QS.qs.length,time:Date.now()});
+  if(G.activity.length>30)G.activity.pop();
+  const pct=Math.round(QS.correct/QS.qs.length*100);
+  const icons=['😓','😐','👍','🌟','🏆'];
+  document.getElementById('sumIcon').textContent=icons[Math.min(4,Math.floor(pct/25))];
+  document.getElementById('sumTitle').textContent=pct>=90?'Excellent!':pct>=70?'Good work!':pct>=50?'Keep practicing':'Review needed';
+  document.getElementById('sumScore').textContent=QS.correct+'/'+QS.qs.length+' correct ('+pct+'%) · '+QS.diff;
+  document.getElementById('sumXP').textContent='+'+xp+' XP earned';
+  document.getElementById('quizArea').style.display='none';
+  document.getElementById('quizSummary').style.display='block';
+  checkBadges();save();
+}
+
+// ROADMAP
+function showRoadmap(){
+  const l=document.getElementById('roadmapList');l.innerHTML='';
+  ROADMAP_STEPS.forEach((step,i)=>{
+    const topicsDone=step.topics.filter(t=>G.lessons.includes(t)).length;
+    const complete=topicsDone===step.topics.length;
+    const started=topicsDone>0;
+    const nodeClass=complete?'done':started?'current':'locked';
+    const d=document.createElement('div');d.className='rm-step';
+    const tags=step.topics.map(t=>`<span class="rm-tag ${G.lessons.includes(t)?'done':''}">${t}</span>`).join('');
+    d.innerHTML=`<div class="rm-node ${nodeClass}">${complete?'✓':i+1}</div>
+      <div class="rm-content">
+        <div class="rm-title">${step.title} <span style="font-size:10px;color:var(--text3);font-weight:400">(${step.time})</span></div>
+        <div class="rm-desc">${step.desc}</div>
+        <div class="rm-topics">${tags}</div>
+      </div>`;
+    l.appendChild(d);
+  });
+  show('roadmapScreen');
+}
+
+// BADGES
+function showBadges(){
+  const g=document.getElementById('badgeGrid');g.innerHTML='';
+  BADGES.forEach(b=>{
+    const earned=G.earned.includes(b.id);
+    const d=document.createElement('div');d.className='badge-item '+(earned?'earned':'locked');
+    d.innerHTML=`<div class="bi-icon">${b.icon}</div><div class="bi-name">${b.name}</div><div class="bi-desc">${earned?b.desc:'???'}</div>`;
+    g.appendChild(d);
+  });
+  show('badgeScreen');
+}
+
+function checkBadges(){
+  let nb=null;
+  BADGES.forEach(b=>{if(!G.earned.includes(b.id)&&b.check(G)){G.earned.push(b.id);nb=b;}});
+  ui();return nb;
+}
+function showNB(b){
+  const box=document.getElementById('newBadgeBox');
+  if(b){box.style.display='block';document.getElementById('nbIcon').textContent=b.icon;document.getElementById('nbName').textContent=b.name;document.getElementById('nbDesc').textContent=b.desc;}
+  else box.style.display='none';
+}
+
+// LESSON COMPLETE
+async function callAI(sys,area,hist){
+  const t=addTyping(area);
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:sys,messages:hist})});
+    const d=await r.json();t.remove();
+    const reply=d.content?.[0]?.text||'Connection error. Please try again.';
+    hist.push({role:'assistant',content:reply});
+    addMsg(reply,'bot',area);
+    if(area==='chatWrap'&&reply.toLowerCase().includes('lesson complete')){setTimeout(lessonDone,1500);}
+  }catch(e){t.remove();addMsg('Connection error — please try again.','bot',area);}
+}
+
+function lessonDone(){
+  const tr=TRACKS.find(x=>x.id===G.selTrack);
+  const t=tr?tr.topics.find(x=>x.id===G.selTopic):null;
+  const isNew=!G.lessons.includes(G.selTopic);
+  if(isNew)G.lessons.push(G.selTopic);
+  const xp=isNew?40:10;G.xp+=xp;
+  G.activity.unshift({type:'lesson',name:t?t.name:'Lesson',xp,track:tr?tr.name:'',time:Date.now()});
+  if(G.activity.length>30)G.activity.pop();
+  const nb=checkBadges();save();
+  document.getElementById('celIcon').textContent=pick(['🎉','💡','🚀','⚡','🌟']);
+  document.getElementById('celTitle').textContent=pick(['Lesson Complete!','Excellent work!','Knowledge unlocked!','Well done!']);
+  document.getElementById('celMsg').textContent=(t?t.name:'Lesson')+' · '+(tr?tr.name:'');
+  document.getElementById('celXP').textContent='+'+xp+' XP';
+  showNB(nb);show('celebScreen');
+}
+
+// DASHBOARD
+function showDash(){
+  document.getElementById('dashNamePill').textContent=G.name;
+  dTab('overview',document.querySelector('#dashTabs .tab'));
+  show('dashScreen');
+}
+function dTab(t,btn){
+  ['dOverview','dProgress','dActivity','dSettings'].forEach(id=>document.getElementById(id).style.display='none');
+  const map={overview:'dOverview',progress:'dProgress',activity:'dActivity',settings:'dSettings'};
+  document.getElementById(map[t]).style.display='block';
+  document.querySelectorAll('#dashTabs .tab').forEach(x=>x.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(t==='overview')renderDashOverview();
+  if(t==='progress')renderDashProgress();
+  if(t==='activity')renderDashActivity();
+}
+function renderDashOverview(){
+  const lv=Math.floor(G.xp/100)+1;
+  const stats=[['⭐',G.xp+' XP','Total XP'],['🎓','Lv '+lv,'Level'],['📚',G.lessons.length,'Lessons'],['⚔️',G.solved.length,'Challenges'],['🧠',G.quizCorrect,'Correct answers'],['🔥',G.bestStreak,'Best streak'],['🏅',G.earned.length,'Badges'],['💻',G.codeSubmits,'Code reviews']];
+  const sg=document.getElementById('dStatsGrid');sg.innerHTML='';
+  stats.forEach(([ic,n,l])=>{const d=document.createElement('div');d.className='dash-stat';d.innerHTML=`<div class="ds-num">${ic} ${n}</div><div class="ds-lbl">${l}</div>`;sg.appendChild(d);});
+  const af=document.getElementById('dActFeed');af.innerHTML='';
+  if(!G.activity.length){af.innerHTML='<p style="font-size:13px;color:var(--text2);padding:1rem 0">No activity yet.</p>';return;}
+  G.activity.slice(0,10).forEach(a=>{
+    const icons={lesson:'📚',quiz:'⚡',challenge:'⚔️'};
+    const colors={lesson:'var(--blue-dim)',quiz:'var(--amber-dim)',challenge:'var(--green-dim)'};
+    const d=document.createElement('div');d.className='af-item';
+    const time=new Date(a.time).toLocaleDateString()+' '+new Date(a.time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    d.innerHTML=`<div class="af-icon" style="background:${colors[a.type]||'var(--blue-dim)'}">${icons[a.type]||'📌'}</div><div style="flex:1"><div style="font-size:13px">${a.name}</div><div style="font-size:10px;color:var(--text3)">${time}${a.track?' · '+a.track:''}</div></div>${a.score?`<span style="font-size:11px;color:var(--text2)">${a.score}</span>`:''}<span style="font-size:11px;color:var(--green);margin-left:8px">+${a.xp} XP</span>`;
+    af.appendChild(d);
+  });
+}
+function renderDashProgress(){
+  const tp=document.getElementById('dTrackProg');tp.innerHTML='';
+  TRACKS.forEach(tr=>{
+    const done=tr.topics.filter(t=>G.lessons.includes(t.id)).length;
+    const pct=Math.round(done/tr.topics.length*100);
+    const locked=G.xp<tr.minXP;
+    const d=document.createElement('div');d.className='pw-row';
+    d.innerHTML=`<div class="pw-hdr"><span>${tr.icon} ${tr.name}</span><span>${locked?'🔒 '+tr.minXP+' XP needed':done+'/'+tr.topics.length+' · '+pct+'%'}</span></div><div class="pw-bar"><div class="pw-fill" style="width:${pct}%"></div></div>`;
+    tp.appendChild(d);
+  });
+  document.getElementById('dqTotal').textContent=G.quizTotal;
+  document.getElementById('dqCorrect').textContent=G.quizCorrect;
+  document.getElementById('dqStreak').textContent=G.bestStreak;
+  document.getElementById('dqAcc').textContent=G.quizTotal?Math.round(G.quizCorrect/G.quizTotal*100)+'%':'0%';
+}
+function renderDashActivity(){
+  const easy=G.solved.filter(id=>CHALLENGES.find(c=>c.id===id&&c.diff==='easy')).length;
+  const med=G.solved.filter(id=>CHALLENGES.find(c=>c.id===id&&c.diff==='medium')).length;
+  const hard=G.solved.filter(id=>CHALLENGES.find(c=>c.id===id&&c.diff==='hard')).length;
+  document.getElementById('dcEasy').textContent=easy;
+  document.getElementById('dcMed').textContent=med;
+  document.getElementById('dcHard').textContent=hard;
+  const bg=document.getElementById('dBadgeGrid');bg.innerHTML='';
+  BADGES.forEach(b=>{
+    const earned=G.earned.includes(b.id);
+    const d=document.createElement('div');d.className='badge-item '+(earned?'earned':'locked');
+    d.innerHTML=`<div class="bi-icon">${b.icon}</div><div class="bi-name">${b.name}</div><div class="bi-desc">${earned?b.desc:'Locked'}</div>`;
+    bg.appendChild(d);
+  });
+}
+function savePin(){
+  const p1=document.getElementById('pin1').value.trim(),p2=document.getElementById('pin2').value.trim();
+  const msg=document.getElementById('pinMsg');
+  if(!p1||p1.length<4){msg.textContent='PIN must be 4-6 digits';msg.style.color='var(--red)';return;}
+  if(p1!==p2){msg.textContent='PINs do not match';msg.style.color='var(--red)';return;}
+  G.pin=p1;save();msg.textContent='PIN saved successfully';msg.style.color='var(--green)';
+}
+function doReset(){
+  if(!confirm('Reset ALL progress for '+G.name+'? This is permanent.'))return;
+  const nm=G.name,pin=G.pin;
+  G={name:nm,pin,xp:0,lessons:[],earned:[],solved:[],codeSubmits:0,quizCorrect:0,quizTotal:0,bestStreak:0,curStreak:0,activity:[],selTrack:'t1',selTopic:null,history:[],chalHistory:[],chalDiff:'all'};
+  save();showDash();
+}
+
+function addMsg(text,who,area){
+  const el=document.getElementById(area);if(!el)return;
+  const div=document.createElement('div');div.className='msg '+(who==='user'?'user':'');
+  const av=document.createElement('div');av.className='av '+(who==='user'?'usr':'bot');av.textContent=who==='user'?'You':'AI';
+  const bub=document.createElement('div');bub.className='bub';bub.innerHTML=fmt(text);
+  div.appendChild(av);div.appendChild(bub);el.appendChild(div);el.scrollTop=el.scrollHeight;
+}
+function addTyping(area){
+  const el=document.getElementById(area);if(!el)return{remove:()=>{}};
+  const div=document.createElement('div');div.className='msg';
+  div.innerHTML='<div class="av bot">AI</div><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  el.appendChild(div);el.scrollTop=el.scrollHeight;return div;
+}
+function fmt(t){
+  t=t.replace(/```python\n?([\s\S]*?)```/g,'<pre>$1</pre>');
+  t=t.replace(/```\n?([\s\S]*?)```/g,'<pre>$1</pre>');
+  t=t.replace(/`([^`]+)`/g,'<code>$1</code>');
+  t=t.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  t=t.replace(/\n/g,'<br>');return t;
+}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+</script>
+</body>
+</html>
